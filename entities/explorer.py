@@ -1,12 +1,12 @@
 import random
 
 from entities.drawable_entity import DrawableEntity
-from utils import rect_in_world, rects_are_overlapping
+from utils import rect_in_world, rects_are_overlapping, normalize
 
 
 class Explorer(DrawableEntity):
     SIZE = 15
-    MAX_VELOCITY = 1
+    MAX_VELOCITY = 0.9
     PICKUP_REACH = 1
     COLOR = 'blue'
 
@@ -51,7 +51,7 @@ class Explorer(DrawableEntity):
     def _get_new_direction(self):
         dx = random.uniform(-self.MAX_VELOCITY, self.MAX_VELOCITY)
         dy = random.uniform(-self.MAX_VELOCITY, self.MAX_VELOCITY)
-        return dx, dy
+        return normalize(dx, dy)
 
     def _can_move(self):
         new_self = Explorer(self.x + self.dx,

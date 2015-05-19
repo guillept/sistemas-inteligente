@@ -1,4 +1,5 @@
 from collections import namedtuple
+import math
 
 
 Point = namedtuple('Point', ('x', 'y'))
@@ -20,3 +21,12 @@ def rect_in_world(rect, world):
         bottom_right.x > world.width or bottom_right.y > world.height):
         return False
     return True
+
+
+def compute_abs(dx, dy):
+    return math.sqrt(dx**2 + dy**2)
+
+
+def normalize(dx, dy):
+    abs = compute_abs(dx, dy)
+    return dx / abs, dy / abs
