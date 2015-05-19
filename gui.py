@@ -1,7 +1,5 @@
 from Tkinter import Tk, Canvas
 
-from drawable_entity import DrawableEntity
-
 
 class GUI(object):
     def __init__(self, world):
