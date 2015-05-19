@@ -1,7 +1,7 @@
 from gui import GUI
-from mars_base import MarsBase
-from obstacle import Obstacle
-from world import World
+from entities.mars_base import MarsBase
+from entities.obstacle import Obstacle
+from entities.world import World
 
 
 def main():

@@ -1,6 +1,6 @@
 import random
 
-from drawable_entity import DrawableEntity
+from entities.drawable_entity import DrawableEntity
 from utils import rects_are_overlapping
 
 

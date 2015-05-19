@@ -1,4 +1,4 @@
-from drawable_entity import DrawableEntity
+from entities.drawable_entity import DrawableEntity
 
 
 class World(DrawableEntity):
