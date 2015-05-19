@@ -4,11 +4,11 @@ from drawable_entity import DrawableEntity
 
 
 class GUI(object):
-    def __init__(self, width, height):
+    def __init__(self, world):
         self.ticks = 0
-        self.width = width
-        self.height = height
-        self.entities = []
+        self.world = world
+        self.width = world.width
+        self.height = world.height
 
         self.root = Tk()
         self.root.title("Mars Explorer")
@@ -23,10 +23,6 @@ class GUI(object):
     def start(self):
         self.root.mainloop()
 
-    def add_entity(self, entity):
-        assert isinstance(entity, DrawableEntity)
-        self.entities.append(entity)
-
     def _tick(self):
         self._draw()
 
@@ -36,7 +32,8 @@ class GUI(object):
     def _draw(self):
         self.canvas.delete('all')
 
-        for entity in self.entities:
+        self.world.draw(self.canvas)
+        for entity in self.world.entities:
             entity.draw(self.canvas)
 
         self.canvas.create_text(self.width - 20, 10, text=str(self.ticks))
