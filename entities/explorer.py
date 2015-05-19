@@ -48,8 +48,10 @@ class Explorer(DrawableEntity):
             return False
 
         for other in new_self.world.entities:
-            if other == self:
+            # Allow collisions with other explorers.
+            if isinstance(other, Explorer):
                 continue
+
             if rects_are_overlapping(bounds, other.get_bounds()):
                 return False
 
