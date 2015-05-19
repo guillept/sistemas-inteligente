@@ -9,6 +9,7 @@ class Explorer(DrawableEntity):
     MAX_VELOCITY = 0.9
     PICKUP_REACH = 1
     SENSOR_RANGE = 15
+    SENSE_DELAY = 100
     COLOR = 'blue'
     SENSOR_COLOR = 'yellow'
 
@@ -99,6 +100,10 @@ class Explorer(DrawableEntity):
         return False
 
     def _sense_rock(self):
+        # Wait a bit so that the explorers spread out.
+        if self.ticks < self.SENSE_DELAY:
+            return None
+
         for rock in self.world.rocks:
             if rects_are_overlapping(self.get_bounds(),
                                      rock.get_bounds(),
