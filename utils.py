@@ -12,3 +12,11 @@ def rects_are_overlapping(rect_a, rect_b):
             a_bottom_right.x > b_top_left.x and
             a_top_left.y < b_bottom_right.y and
             a_bottom_right.y > b_top_left.y)
+
+
+def rect_in_world(rect, world):
+    top_left, bottom_right = rect
+    if (top_left.x < 0 or top_left.y < 0 or
+        bottom_right.x > world.width or bottom_right.y > world.height):
+        return False
+    return True

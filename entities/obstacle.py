@@ -1,7 +1,7 @@
 import random
 
 from entities.drawable_entity import DrawableEntity
-from utils import rects_are_overlapping
+from utils import rects_are_overlapping, rect_in_world
 
 
 class Obstacle(DrawableEntity):
@@ -22,23 +22,22 @@ class Obstacle(DrawableEntity):
 
     def has_room(self, obstacles, world):
         """Checks whether self has room in world, among other obstacles."""
-        top_left, bottom_right = self.get_bounds()
+        bounds = self.get_bounds()
 
-        if (top_left.x < 0 or top_left.y < 0 or
-                    bottom_right.x > world.width or bottom_right.y > world.height):
+        if not rect_in_world(bounds, world):
             return False
 
         for other in obstacles + world.entities:
-            if rects_are_overlapping(self.get_bounds(),
+            if rects_are_overlapping(bounds,
                                      other.get_bounds()):
                 return False
 
         return True
 
     @staticmethod
-    def generate_many(num_obstacles, world):
+    def generate_many(num, world):
         obstacles = []
-        for _ in range(num_obstacles):
+        while len(obstacles) < num:
             x = random.randint(0, world.width)
             y = random.randint(0, world.height)
 
