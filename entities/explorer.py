@@ -44,20 +44,29 @@ class Explorer(DrawableEntity):
 
     def _tick(self):
         if self.has_rock:
-            return
+            # Try to drop at base.
+            if self._drop_available():
+                self.has_rock = False
+                return
 
-        rock = self._rock_available()
-        if rock:
-            # self.has_rock = True
-            self.world.remove_entity(rock)
-            return
+            # Head towards base.
+            self.dx, self.dy = normalize(self.world.mars_base.x - self.x,
+                                         self.world.mars_base.y - self.y)
 
-        rock = self._sense_rock()
-        if rock:
-            self.dx, self.dy = normalize(rock.x - self.x, rock.y - self.y)
-            self._move()
-            return
+        else:
+            # Pick up.
+            rock = self._rock_available()
+            if rock:
+                self.has_rock = True
+                self.world.remove_entity(rock)
+                return
 
+            # Head towards rock.
+            rock = self._sense_rock()
+            if rock:
+                self.dx, self.dy = normalize(rock.x - self.x, rock.y - self.y)
+
+        # Keep walkin'.
         while not self._can_move():
             self.dx, self.dy = self._get_new_direction()
         self._move()
@@ -111,3 +120,10 @@ class Explorer(DrawableEntity):
                 return rock
 
         return None
+
+    def _drop_available(self):
+        if rects_are_overlapping(self.get_bounds(),
+                                 self.world.mars_base.get_bounds(),
+                                 self.PICKUP_REACH):
+            return True
+        return False
