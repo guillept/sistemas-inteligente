@@ -38,3 +38,17 @@ class World(DrawableEntity):
             self.explorers.append(entity)
         elif isinstance(entity, MarsBase):
             self.mars_base = entity
+
+    def remove_entity(self, entity):
+        assert isinstance(entity, DrawableEntity)
+
+        self.entities.remove(entity)
+
+        if isinstance(entity, Rock):
+            self.rocks.remove(entity)
+        elif isinstance(entity, Obstacle):
+            self.obstacles.remove(entity)
+        elif isinstance(entity, Explorer):
+            self.explorers.remove(entity)
+        elif isinstance(entity, MarsBase):
+            self.mars_base = None

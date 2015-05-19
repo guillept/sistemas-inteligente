@@ -6,7 +6,8 @@ from utils import rect_in_world, rects_are_overlapping
 
 class Explorer(DrawableEntity):
     SIZE = 15
-    MAX_VELOCITY = 1.4
+    MAX_VELOCITY = 1
+    PICKUP_REACH = 1
     COLOR = 'blue'
 
     def __init__(self, x, y, world):
@@ -15,6 +16,7 @@ class Explorer(DrawableEntity):
         self.world = world
         self.dx, self.dy = self._get_new_direction()
         self.ticks = 0
+        self.has_rock = False
 
     def draw(self, canvas):
         top_left, bottom_right = self.get_bounds()
@@ -25,10 +27,22 @@ class Explorer(DrawableEntity):
                                 fill=self.COLOR)
 
     def tick(self):
+        self._tick()
+        self.ticks += 1
+
+    def _tick(self):
+        if self.has_rock:
+            return
+
+        rock = self._rock_available()
+        if rock:
+            # self.has_rock = True
+            self.world.remove_entity(rock)
+            return
+
         while not self._can_move():
             self.dx, self.dy = self._get_new_direction()
         self._move()
-        self.ticks += 1
 
     def _move(self):
         self.x += self.dx
@@ -57,3 +71,12 @@ class Explorer(DrawableEntity):
                 return False
 
         return True
+
+    def _rock_available(self):
+        for rock in self.world.rocks:
+            if rects_are_overlapping(self.get_bounds(),
+                                     rock.get_bounds(),
+                                     self.PICKUP_REACH):
+                return rock
+
+        return False
