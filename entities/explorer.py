@@ -5,7 +5,8 @@ from utils import rect_in_world, rects_are_overlapping
 
 
 class Explorer(DrawableEntity):
-    SIZE = 20
+    SIZE = 15
+    MAX_VELOCITY = 1.4
     COLOR = 'blue'
 
     def __init__(self, x, y, world):
@@ -33,8 +34,8 @@ class Explorer(DrawableEntity):
         self.y += self.dy
 
     def _get_new_direction(self):
-        dx = random.uniform(-1, 1)
-        dy = random.uniform(-1, 1)
+        dx = random.uniform(-self.MAX_VELOCITY, self.MAX_VELOCITY)
+        dy = random.uniform(-self.MAX_VELOCITY, self.MAX_VELOCITY)
         return dx, dy
 
     def _can_move(self):
