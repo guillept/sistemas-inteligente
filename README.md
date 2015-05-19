@@ -1,6 +1,12 @@
 # mars-explorer
 School assignment - Multi Agent System collecting stuff on Mars
 
+## Run me
+
+```bash
+python main.py
+```
+
 ## Details
 
 Reactive agents.
