@@ -8,6 +8,7 @@ from entities.world import World
 
 NUM_OBSTACLES = 10
 NUM_ROCKS = 200
+NUM_EXPLORERS = 5
 
 
 def init_entities():
@@ -16,10 +17,11 @@ def init_entities():
     mars_base = MarsBase(world.width, world.height)
     world.add_entity(mars_base)
 
-    explorer = Explorer(mars_base.x + mars_base.SIZE,
-                        mars_base.y + mars_base.SIZE,
-                        world)
-    world.add_entity(explorer)
+    for _ in range(NUM_EXPLORERS):
+        explorer = Explorer(mars_base.x + mars_base.SIZE,
+                            mars_base.y + mars_base.SIZE,
+                            world)
+        world.add_entity(explorer)
 
     obstacles = Obstacle.generate_many(NUM_OBSTACLES, world)
     for obstacle in obstacles:
