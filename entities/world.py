@@ -1,4 +1,5 @@
 from entities.drawable_entity import DrawableEntity
+from entities.explorer import Explorer
 from entities.mars_base import MarsBase
 from entities.obstacle import Obstacle
 from entities.rock import Rock
@@ -14,6 +15,7 @@ class World(DrawableEntity):
         self.entities = []
         self.rocks = []
         self.obstacles = []
+        self.explorers = []
         self.mars_base = None
 
     def draw(self, canvas):
@@ -28,5 +30,7 @@ class World(DrawableEntity):
             self.rocks.append(entity)
         elif isinstance(entity, Obstacle):
             self.obstacles.append(entity)
+        elif isinstance(entity, Explorer):
+            self.explorers.append(entity)
         elif isinstance(entity, MarsBase):
             self.mars_base = entity
