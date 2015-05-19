@@ -17,7 +17,8 @@ def init_entities():
     world.add_entity(mars_base)
 
     explorer = Explorer(mars_base.x + mars_base.SIZE,
-                        mars_base.y + mars_base.SIZE)
+                        mars_base.y + mars_base.SIZE,
+                        world)
     world.add_entity(explorer)
 
     obstacles = Obstacle.generate_many(NUM_OBSTACLES, world)

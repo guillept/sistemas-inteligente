@@ -22,6 +22,7 @@ class GUI(object):
         self.root.mainloop()
 
     def _tick(self):
+        self.world.tick()
         self._draw()
 
         self.ticks += 1

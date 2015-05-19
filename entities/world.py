@@ -21,6 +21,10 @@ class World(DrawableEntity):
     def draw(self, canvas):
         canvas.configure(background=self.COLOR)
 
+    def tick(self):
+        for explorer in self.explorers:
+            explorer.tick()
+
     def add_entity(self, entity):
         assert isinstance(entity, DrawableEntity)
 
