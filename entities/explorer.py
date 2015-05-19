@@ -13,8 +13,8 @@ class Explorer(DrawableEntity):
         self.x = x
         self.y = y
         self.world = world
-
         self.dx, self.dy = self._get_new_direction()
+        self.ticks = 0
 
     def draw(self, canvas):
         top_left, bottom_right = self.get_bounds()
@@ -28,6 +28,7 @@ class Explorer(DrawableEntity):
         while not self._can_move():
             self.dx, self.dy = self._get_new_direction()
         self._move()
+        self.ticks += 1
 
     def _move(self):
         self.x += self.dx
