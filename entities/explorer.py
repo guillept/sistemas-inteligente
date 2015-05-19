@@ -5,10 +5,12 @@ from utils import rect_in_world, rects_are_overlapping, normalize
 
 
 class Explorer(DrawableEntity):
-    SIZE = 15
+    SIZE = 7
     MAX_VELOCITY = 0.9
     PICKUP_REACH = 1
+    SENSOR_RANGE = 15
     COLOR = 'blue'
+    SENSOR_COLOR = 'yellow'
 
     def __init__(self, x, y, world):
         self.x = x
@@ -19,6 +21,15 @@ class Explorer(DrawableEntity):
         self.has_rock = False
 
     def draw(self, canvas):
+        helper = Explorer(self.x, self.y, self.world)
+        helper.SIZE = 2 * self.SENSOR_RANGE + self.SIZE
+        top_left, bottom_right = helper.get_bounds()
+        canvas.create_oval(top_left.x,
+                           top_left.y,
+                           bottom_right.x,
+                           bottom_right.y,
+                           outline=self.SENSOR_COLOR)
+
         top_left, bottom_right = self.get_bounds()
         canvas.create_rectangle(top_left.x,
                                 top_left.y,
@@ -38,6 +49,12 @@ class Explorer(DrawableEntity):
         if rock:
             # self.has_rock = True
             self.world.remove_entity(rock)
+            return
+
+        rock = self._sense_rock()
+        if rock:
+            self.dx, self.dy = normalize(rock.x - self.x, rock.y - self.y)
+            self._move()
             return
 
         while not self._can_move():
@@ -80,3 +97,12 @@ class Explorer(DrawableEntity):
                 return rock
 
         return False
+
+    def _sense_rock(self):
+        for rock in self.world.rocks:
+            if rects_are_overlapping(self.get_bounds(),
+                                     rock.get_bounds(),
+                                     self.SENSOR_RANGE):
+                return rock
+
+        return None

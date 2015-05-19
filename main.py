@@ -8,7 +8,7 @@ from entities.world import World
 
 NUM_OBSTACLES = 10
 NUM_ROCKS = 200
-NUM_EXPLORERS = 1
+NUM_EXPLORERS = 8
 
 
 def init_entities():
