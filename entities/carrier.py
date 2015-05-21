@@ -5,6 +5,7 @@ from utils import normalize, rects_are_overlapping, distance, Point
 
 class Carrier(Explorer):
     COLOR = 'red'
+    EN_ROUTE_COLOR = 'green'
 
     def __init__(self, x, y, world):
         super(Carrier, self).__init__(x, y, world)
@@ -18,7 +19,7 @@ class Carrier(Explorer):
                                 top_left.y,
                                 bottom_right.x,
                                 bottom_right.y,
-                                fill=self.COLOR)
+                                fill=self.EN_ROUTE_COLOR if self.en_route else self.COLOR)
 
     def _tick(self):
         # If all rocks are collected, take what it has to the base.
