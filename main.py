@@ -10,11 +10,11 @@ from entities.world import World
 NUM_OBSTACLES = 10
 NUM_ROCKS = 100
 NUM_EXPLORERS = 5
-NUM_CARRIERS = 5
+NUM_CARRIERS = 2
 
 
 def init_entities():
-    world = World(800, 600)
+    world = World(800, 600, NUM_ROCKS)
 
     mars_base = MarsBase(world.width, world.height)
     world.add_entity(mars_base)

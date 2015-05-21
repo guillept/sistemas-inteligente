@@ -1,6 +1,7 @@
 import random
 
 from entities.drawable_entity import DrawableEntity
+from entities.message import MESSAGE_WAIT, ComeMessage
 from utils import rect_in_world, rects_are_overlapping, normalize
 
 
@@ -20,6 +21,7 @@ class Explorer(DrawableEntity):
         self.dx, self.dy = self._get_new_direction()
         self.ticks = 0
         self.has_rock = False
+        self.inbox = []
 
     def draw(self, canvas):
         helper = Explorer(self.x, self.y, self.world)
@@ -38,6 +40,15 @@ class Explorer(DrawableEntity):
                                 bottom_right.y,
                                 fill=self.COLOR)
 
+    def clear_inbox(self):
+        self.inbox = []
+
+    def clear_inbox_from(self, source):
+        self.inbox = [msg for msg in self.inbox if msg.source != source]
+
+    def transfer_rock_to_carrier(self):
+        self.has_rock = False
+
     def tick(self):
         self._tick()
         self.ticks += 1
@@ -47,11 +58,26 @@ class Explorer(DrawableEntity):
             # Try to drop at base.
             if self._drop_available():
                 self.has_rock = False
+                self.world.rock_collected()
                 return
 
-            # Head towards base.
-            self.dx, self.dy = normalize(self.world.mars_base.x - self.x,
-                                         self.world.mars_base.y - self.y)
+            # Carrier on its way.
+            carrier = self._incoming_carrier()
+            if carrier:
+                # Clear msg from self in other carriers.
+                for other in self.world.carriers:
+                    if other == carrier:
+                        continue
+                    other.clear_inbox_from(self)
+                return
+
+            # Call for a carrier to pick up.
+            self._broadcast_come_message()
+            return
+
+            # Head towards base, just in case carrier is not available.
+            # self.dx, self.dy = normalize(self.world.mars_base.x - self.x,
+            #                              self.world.mars_base.y - self.y)
 
         else:
             # Pick up.
@@ -106,7 +132,7 @@ class Explorer(DrawableEntity):
                                      self.PICKUP_REACH):
                 return rock
 
-        return False
+        return None
 
     def _sense_rock(self):
         # Wait a bit so that the explorers spread out.
@@ -127,3 +153,13 @@ class Explorer(DrawableEntity):
                                  self.PICKUP_REACH):
             return True
         return False
+
+    def _incoming_carrier(self):
+        incoming = [msg for msg in self.inbox if msg.type == MESSAGE_WAIT]
+        if incoming:
+            return incoming[0]
+        return None
+
+    def _broadcast_come_message(self):
+        for carrier in self.world.carriers:
+            carrier.inbox.append(ComeMessage(self, self.x, self.y))
