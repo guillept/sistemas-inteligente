@@ -1,0 +1,6 @@
+No carriers. No reactive trails.
+5 explorers, 100 rocks, 10 obstacles - 18041
+10 explorers, 100 rocks, 10 obstacles - 11379
+15 explorers, 100 rocks, 10 obstacles - 6278
+20 explorers, 100 rocks, 10 obstacles - 4351
+25 explorers, 100 rocks, 10 obstacles - 5309
