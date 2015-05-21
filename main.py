@@ -1,3 +1,4 @@
+from entities.carrier import Carrier
 from entities.explorer import Explorer
 from gui import GUI
 from entities.mars_base import MarsBase
@@ -9,6 +10,7 @@ from entities.world import World
 NUM_OBSTACLES = 10
 NUM_ROCKS = 100
 NUM_EXPLORERS = 5
+NUM_CARRIERS = 5
 
 
 def init_entities():
@@ -22,6 +24,12 @@ def init_entities():
                             mars_base.y + mars_base.SIZE,
                             world)
         world.add_entity(explorer)
+
+    for _ in range(NUM_CARRIERS):
+        carrier = Carrier(mars_base.x + mars_base.SIZE,
+                          mars_base.y + mars_base.SIZE,
+                          world)
+        world.add_entity(carrier)
 
     obstacles = Obstacle.generate_many(NUM_OBSTACLES, world)
     for obstacle in obstacles:
