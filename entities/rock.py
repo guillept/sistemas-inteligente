@@ -14,11 +14,11 @@ class Rock(DrawableEntity):
 
     def draw(self, canvas):
         top_left, bottom_right = self.get_bounds()
-        canvas.create_rectangle(top_left.x,
-                                top_left.y,
-                                bottom_right.x,
-                                bottom_right.y,
-                                fill=self.COLOR)
+        canvas.create_oval(top_left.x,
+                           top_left.y,
+                           bottom_right.x,
+                           bottom_right.y,
+                           fill=self.COLOR)
 
     def has_room(self, world):
         """Checks whether self has room in world."""
