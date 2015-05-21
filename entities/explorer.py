@@ -7,7 +7,7 @@ from utils import rect_in_world, rects_are_overlapping, normalize
 
 class Explorer(DrawableEntity):
     SIZE = 7
-    MAX_VELOCITY = 0.9
+    MAX_VELOCITY = 1.3
     PICKUP_REACH = 1
     SENSOR_RANGE = 15
     SENSE_DELAY = 100
