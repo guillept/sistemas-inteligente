@@ -12,6 +12,7 @@ class Explorer(DrawableEntity):
     SENSOR_RANGE = 15
     SENSE_DELAY = 100
     COLOR = 'blue'
+    HAS_ROCK_COLOR = 'yellow'
     SENSOR_COLOR = 'yellow'
 
     def __init__(self, x, y, world):
@@ -38,7 +39,7 @@ class Explorer(DrawableEntity):
                                 top_left.y,
                                 bottom_right.x,
                                 bottom_right.y,
-                                fill=self.COLOR)
+                                fill=self.HAS_ROCK_COLOR if self.has_rock else self.COLOR)
 
     def clear_inbox(self):
         self.inbox = []
