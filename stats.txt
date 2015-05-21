@@ -1,6 +1,13 @@
-No carriers. No reactive trails.
+No carriers.
 5 explorers, 100 rocks, 10 obstacles - 18041
 10 explorers, 100 rocks, 10 obstacles - 11379
 15 explorers, 100 rocks, 10 obstacles - 6278
 20 explorers, 100 rocks, 10 obstacles - 4351
 25 explorers, 100 rocks, 10 obstacles - 5309
+
+Carriers.
+10 explorers, 10 carriers, 100 rocks, 10 obstacles - 9520
+20 explorers, 10 carriers, 100 rocks, 10 obstacles - 5911, 9338, 8138, 8492
+
+Carriers + explorers not always waiting for carriers
+20 explorers, 10 carriers, 100 rocks, 10 obstacles - 11057

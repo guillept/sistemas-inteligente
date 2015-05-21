@@ -42,7 +42,8 @@ class GUI(object):
         self.canvas.create_text(self.width - 20, 10, text=str(self.ticks))
         self.canvas.create_text(self.width - 70, 30,
                                 text='Rocks in carriers: %d' % self.world.rocks_in_carriers())
-        self.canvas.create_text(self.width - 55, 50, text='Total rocks: %d' % self.world.num_rocks)
+        self.canvas.create_text(self.width - 70, 50, text='Rocks delivered: %d' % self.world.rocks_collected)
+        self.canvas.create_text(self.width - 55, 70, text='Total rocks: %d' % self.world.num_rocks)
 
     def _compute_window_coords(self):
         # http://stackoverflow.com/a/14912644/742501
