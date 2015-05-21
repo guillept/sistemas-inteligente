@@ -1,3 +1,5 @@
+import argparse
+
 from entities.carrier import Carrier
 from entities.explorer import Explorer
 from gui import GUI
@@ -7,35 +9,29 @@ from entities.rock import Rock
 from entities.world import World
 
 
-NUM_OBSTACLES = 10
-NUM_ROCKS = 100
-NUM_EXPLORERS = 5
-NUM_CARRIERS = 2
-
-
-def init_entities():
-    world = World(800, 600, NUM_ROCKS)
+def init_entities(num_obstacles, num_rocks, num_explorers, num_carriers):
+    world = World(800, 600, num_rocks)
 
     mars_base = MarsBase(world.width, world.height)
     world.add_entity(mars_base)
 
-    for _ in range(NUM_EXPLORERS):
+    for _ in range(num_explorers):
         explorer = Explorer(mars_base.x + mars_base.SIZE,
                             mars_base.y + mars_base.SIZE,
                             world)
         world.add_entity(explorer)
 
-    for _ in range(NUM_CARRIERS):
+    for _ in range(num_carriers):
         carrier = Carrier(mars_base.x + mars_base.SIZE,
                           mars_base.y + mars_base.SIZE,
                           world)
         world.add_entity(carrier)
 
-    obstacles = Obstacle.generate_many(NUM_OBSTACLES, world)
+    obstacles = Obstacle.generate_many(num_obstacles, world)
     for obstacle in obstacles:
         world.add_entity(obstacle)
 
-    rocks = Rock.generate_many(NUM_ROCKS, world)
+    rocks = Rock.generate_many(num_rocks, world)
     for rock in rocks:
         world.add_entity(rock)
 
@@ -43,7 +39,18 @@ def init_entities():
 
 
 def main():
-    world = init_entities()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--obstacles', default=10, dest='obstacles', type=int)
+    parser.add_argument('--rocks', default=100, dest='rocks', type=int)
+    parser.add_argument('--explorers', default=10, dest='explorers', type=int)
+    parser.add_argument('--carriers', default=10, dest='carriers', type=int)
+
+    args = parser.parse_args()
+
+    world = init_entities(args.obstacles,
+                          args.rocks,
+                          args.explorers,
+                          args.carriers)
 
     gui = GUI(world)
     gui.start()
