@@ -22,6 +22,10 @@ class GUI(object):
         self.root.mainloop()
 
     def _tick(self):
+        # Stop if done.
+        if self.world.is_done():
+            return
+
         self.world.tick()
         self._draw()
 

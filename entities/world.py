@@ -52,3 +52,6 @@ class World(DrawableEntity):
             self.explorers.remove(entity)
         elif isinstance(entity, MarsBase):
             self.mars_base = None
+
+    def is_done(self):
+        return not self.rocks
