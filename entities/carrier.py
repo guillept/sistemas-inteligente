@@ -23,6 +23,11 @@ class Carrier(Explorer):
     def _tick(self):
         # If all rocks are collected, take what it has to the base.
         if self._all_rocks_collected():
+            if self._drop_available():
+                for _ in range(self.rocks):
+                    self.world.rock_collected()
+                    self.rocks -= 1
+                return
             self.dx, self.dy = normalize(self.world.mars_base.x - self.x,
                                          self.world.mars_base.y - self.y)
 
@@ -73,10 +78,8 @@ class Carrier(Explorer):
         return None
 
     def _all_rocks_collected(self):
-        total_rocks = 0
-        for carrier in self.world.carriers:
-            total_rocks += carrier.rocks
-        return total_rocks == self.world.num_rocks
+        rocks_in_explorer = [True for explorer in self.world.explorers if explorer.has_rock]
+        return not bool(self.world.rocks) and not rocks_in_explorer
 
     def _reset(self):
         self.en_route = False
