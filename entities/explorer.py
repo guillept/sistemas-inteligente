@@ -65,21 +65,12 @@ class Explorer(DrawableEntity):
             # Call for a carrier to pick up.
             self._broadcast_come_message()
 
-            # Carrier on its way.
-            carrier = self._incoming_carrier()
-            if carrier:
-                # Clear msg from self in other carriers.
-                for other in self.world.carriers:
-                    if other == carrier:
-                        continue
-                    other.clear_inbox_from(self)
-                return
-
             # Head towards base if carriers not available.
             if not self.world.carriers:
                 self.dx, self.dy = normalize(self.world.mars_base.x - self.x,
                                              self.world.mars_base.y - self.y)
-
+            else:
+                return
         else:
             # Pick up.
             rock = self._rock_available()
