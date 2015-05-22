@@ -42,6 +42,7 @@ Explorers wander about, for every rock found they take it to the base.
 
     To run in this mode, you need to pass `--carriers 0`.
 
+![demo-without-carriers](https://raw.githubusercontent.com/mihneadb/mars-explorer/master/demo-gifs/mars-explorer-no-carriers.gif)
 
 ### With carriers
 
@@ -49,3 +50,5 @@ Explorers wander about. When they find a rock, they stop, send a message to all 
 and one or more carriers will come to pick up the rock. Then the explorer carries on with
 the search. When all the rocks are collected, the carriers go to the base to turn in their
 rocks.
+
+![demo-with-carriers](https://raw.githubusercontent.com/mihneadb/mars-explorer/master/demo-gifs/mars-explorer-carriers.gif)
