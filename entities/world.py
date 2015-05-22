@@ -7,7 +7,7 @@ from entities.rock import Rock
 
 
 class World(DrawableEntity):
-    COLOR = '#803300'
+    COLOR = '#804C1A'
 
     def __init__(self, width, height, num_rocks):
         self.width = width
