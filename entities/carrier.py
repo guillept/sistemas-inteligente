@@ -1,3 +1,5 @@
+import random
+
 from entities.explorer import Explorer
 from entities.message import MESSAGE_COME, WaitMessage
 from utils import normalize, rects_are_overlapping, distance, Point
@@ -46,9 +48,9 @@ class Carrier(Explorer):
                 # Check for closest explorer that needs pickup.
                 p = Point(self.x, self.y)
                 msgs = [msg for msg in self.inbox if msg.type == MESSAGE_COME]
-                msgs.sort(key=lambda m: m.point, cmp=lambda p1, p2: distance(p1, p) < distance(p2, p))
+                # msgs.sort(key=lambda m: m.point, cmp=lambda p1, p2: distance(p1, p) < distance(p2, p))
                 if msgs:
-                    msg = msgs[0]
+                    msg = random.choice(msgs)
                     explorer = msg.source
                     explorer.inbox.append(WaitMessage(self))
                     self.en_route = True
