@@ -3,7 +3,7 @@ import random
 from entities.drawable_entity import DrawableEntity
 from entities.message import MESSAGE_WAIT, ComeMessage
 from utils import rect_in_world, rects_are_overlapping, normalize
-
+from entities.morona import Morona
 
 class Explorer(DrawableEntity):
     SIZE = 7
@@ -23,6 +23,8 @@ class Explorer(DrawableEntity):
         self.ticks = 0
         self.has_rock = False
         self.inbox = []
+        self.index = 0
+        self.last_index = -1
 
     def draw(self, canvas):
         helper = Explorer(self.x, self.y, self.world)
@@ -56,6 +58,7 @@ class Explorer(DrawableEntity):
 
     def _tick(self):
         if self.has_rock:
+            self.last_index = -1
             # Try to drop at base.
             if self._drop_available():
                 self.has_rock = False
@@ -76,8 +79,21 @@ class Explorer(DrawableEntity):
             rock = self._rock_available()
             if rock:
                 self.has_rock = True
+
+                moronas = Morona.generate_many(2, self.world, self.x, self.y)
+                for morona in moronas:
+                    self.world.add_entity(morona, self.index)    
+                self.index += 1
+            
                 self.world.remove_entity(rock)
                 return
+            
+            # Pick up morona
+            morona, index = self._morona_available()
+            if morona:
+                if self.last_index != index:
+                    self.world.remove_entity(morona, index)
+                    self.last_index = index
 
             # Head towards rock.
             rock = self._sense_rock()
@@ -87,6 +103,7 @@ class Explorer(DrawableEntity):
         # Keep walkin'.
         while not self._can_move():
             self.dx, self.dy = self._get_new_direction()
+            self.last_index = -1
         self._move()
 
     def _move(self):
@@ -112,6 +129,10 @@ class Explorer(DrawableEntity):
             if isinstance(other, Explorer):
                 continue
 
+            # Allow collisions with other moronas.
+            if isinstance(other, Morona):
+                continue
+
             if rects_are_overlapping(bounds, other.get_bounds()):
                 return False
 
@@ -125,6 +146,15 @@ class Explorer(DrawableEntity):
                 return rock
 
         return None
+
+    def _morona_available(self):
+
+        for siblings in self.world.moronas:
+            for morona in self.world.moronas[siblings]:
+                if rects_are_overlapping(self.get_bounds(), morona.get_bounds()):
+                    return morona, siblings
+
+        return None, 0
 
     def _sense_rock(self):
         # Wait a bit so that the explorers spread out.

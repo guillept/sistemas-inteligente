@@ -4,6 +4,7 @@ from entities.explorer import Explorer
 from entities.mars_base import MarsBase
 from entities.obstacle import Obstacle
 from entities.rock import Rock
+from entities.morona import Morona
 
 
 class World(DrawableEntity):
@@ -14,12 +15,15 @@ class World(DrawableEntity):
         self.height = height
 
         self.entities = []
+        self.entities_but_explorer = []
         self.rocks = []
         self.obstacles = []
         self.explorers = []
         self.carriers = []
+        self.moronas = {}
         self.mars_base = None
         self.num_rocks = num_rocks
+        self.num_moronas = 0
         self.rocks_collected = 0
 
     def draw(self, canvas):
@@ -31,11 +35,13 @@ class World(DrawableEntity):
         for carrier in self.carriers:
             carrier.tick()
 
-    def add_entity(self, entity):
+    def add_entity(self, entity, index=0):
         assert isinstance(entity, DrawableEntity)
 
         self.entities.append(entity)
 
+        if not isinstance(entity, Explorer) and isinstance(entity, Morona):
+            self.entities_but_explorer.append(entity)
         if isinstance(entity, Rock):
             self.rocks.append(entity)
         elif isinstance(entity, Obstacle):
@@ -47,8 +53,14 @@ class World(DrawableEntity):
             self.explorers.append(entity)
         elif isinstance(entity, MarsBase):
             self.mars_base = entity
+        elif isinstance(entity, Morona):
+            if index in self.moronas:
+                self.moronas[index].append(entity)
+            else:
+                self.moronas[index] = [entity]
 
-    def remove_entity(self, entity):
+
+    def remove_entity(self, entity, index=0):
         assert isinstance(entity, DrawableEntity)
 
         self.entities.remove(entity)
@@ -64,6 +76,8 @@ class World(DrawableEntity):
             self.explorers.remove(entity)
         elif isinstance(entity, MarsBase):
             self.mars_base = None
+        if isinstance(entity, Morona):
+            self.moronas[index].remove(entity)
 
     def is_done(self):
         return self.rocks_collected == self.num_rocks
