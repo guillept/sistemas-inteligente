@@ -57,53 +57,55 @@ class Explorer(DrawableEntity):
         self.ticks += 1
 
     def _tick(self):
-        if self.has_rock:
-            self.last_index = -1
-            # Try to drop at base.
-            if self._drop_available():
-                self.has_rock = False
-                self.world.rock_collected()
-                return
-
-            # Call for a carrier to pick up.
-            self._broadcast_come_message()
-
-            # Head towards base if carriers not available.
-            if not self.world.carriers:
-                self.dx, self.dy = normalize(self.world.mars_base.x - self.x,
-                                             self.world.mars_base.y - self.y)
-            else:
-                return
-        else:
-            # Pick up.
-            rock = self._rock_available()
-            if rock:
-                self.has_rock = True
-
-                moronas = Morona.generate_many(2, self.world, self.x, self.y)
-                for morona in moronas:
-                    self.world.add_entity(morona, self.index)    
-                self.index += 1
-            
-                self.world.remove_entity(rock)
-                return
-            
-            # Pick up morona
-            morona, index = self._morona_available()
-            if morona:
-                if self.last_index != index:
-                    self.world.remove_entity(morona, index)
-                    self.last_index = index
-
-            # Head towards rock.
-            rock = self._sense_rock()
-            if rock:
-                self.dx, self.dy = normalize(rock.x - self.x, rock.y - self.y)
 
         # Keep walkin'.
-        while not self._can_move():
+        # CAPA 1
+        if not self._can_move():
             self.dx, self.dy = self._get_new_direction()
-            self.last_index = -1
+            self.last_index = -1  
+        else:
+            if self.has_rock:
+                self.last_index = -1
+                # Try to drop at base.
+                # CAPA 2
+                if self._drop_available():
+                    self.has_rock = False
+                    self.world.rock_collected()
+                    return
+
+                self.dx, self.dy = normalize(self.world.mars_base.x - self.x, self.world.mars_base.y - self.y)
+
+            else:
+                # Pick up.
+                # CAPA 3
+                rock = self._rock_available()
+                if rock:
+                    self.has_rock = True
+
+                    moronas = Morona.generate_many(2, self.world, self.x, self.y)
+                    for morona in moronas:
+                        self.world.add_entity(morona, self.index)   
+                    self.index += 1
+                
+                    self.world.remove_entity(rock)
+                    return
+                
+                # Pick up morona
+                # CAPA 4
+                morona, index = self._morona_available()
+                if morona:
+                    if self.last_index != index:
+                        self.world.remove_entity(morona, index)
+                        self.last_index = index
+
+
+                # Head towards rock.
+                # CAPA 4
+                rock = self._sense_rock()
+                if rock:
+                    self.dx, self.dy = normalize(rock.x - self.x, rock.y - self.y)
+
+        # CAPA 5
         self._move()
 
     def _move(self):

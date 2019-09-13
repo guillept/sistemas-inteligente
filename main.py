@@ -10,7 +10,7 @@ from entities.world import World
 
 
 def init_entities(num_obstacles, num_rocks, num_explorers, num_carriers):
-    world = World(900, 900, num_rocks)
+    world = World(500, 500, num_rocks)
 
     mars_base = MarsBase(world.width, world.height)
     world.add_entity(mars_base)
@@ -40,9 +40,9 @@ def init_entities(num_obstacles, num_rocks, num_explorers, num_carriers):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--obstacles', default=3, dest='obstacles', type=int)
-    parser.add_argument('--rocks', default=80, dest='rocks', type=int)
-    parser.add_argument('--explorers', default=5, dest='explorers', type=int)
+    parser.add_argument('--obstacles', default=50, dest='obstacles', type=int)
+    parser.add_argument('--rocks', default=100, dest='rocks', type=int)
+    parser.add_argument('--explorers', default=7, dest='explorers', type=int)
     parser.add_argument('--carriers', default=5, dest='carriers', type=int)
 
     args = parser.parse_args()
