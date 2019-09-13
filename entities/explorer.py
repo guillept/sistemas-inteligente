@@ -4,11 +4,12 @@ from entities.drawable_entity import DrawableEntity
 from entities.message import MESSAGE_WAIT, ComeMessage
 from utils import rect_in_world, rects_are_overlapping, normalize
 from entities.morona import Morona
+from entities.rock import Rock
 
 class Explorer(DrawableEntity):
     SIZE = 7
     MAX_VELOCITY = 1.3
-    PICKUP_REACH = 1
+    PICKUP_REACH = 2
     SENSOR_RANGE = 15
     SENSE_DELAY = 100
     COLOR = 'blue'
@@ -16,8 +17,8 @@ class Explorer(DrawableEntity):
     SENSOR_COLOR = 'yellow'
 
     def __init__(self, x, y, world):
-        self.x = x
-        self.y = y
+        self.x = self.last_x = x
+        self.y = self.last_y = y
         self.world = world
         self.dx, self.dy = self._get_new_direction()
         self.ticks = 0
@@ -58,12 +59,21 @@ class Explorer(DrawableEntity):
 
     def _tick(self):
 
-        # Keep walkin'.
         # CAPA 1
         if not self._can_move():
-            self.dx, self.dy = self._get_new_direction()
+            
             self.last_index = -1  
+            self.dx, self.dy = self._get_new_direction()
+            self.x = self.last_x
+            self.y = self.last_y
+            self._move()
+
+
         else:
+            # Keep walkin'.
+            self.last_x = self.x
+            self.last_y = self.y
+
             if self.has_rock:
                 self.last_index = -1
                 # Try to drop at base.
@@ -71,6 +81,7 @@ class Explorer(DrawableEntity):
                 if self._drop_available():
                     self.has_rock = False
                     self.world.rock_collected()
+                    self.dx, self.dy = self._get_new_direction()
                     return
 
                 self.dx, self.dy = normalize(self.world.mars_base.x - self.x, self.world.mars_base.y - self.y)
@@ -88,6 +99,8 @@ class Explorer(DrawableEntity):
                     self.index += 1
                 
                     self.world.remove_entity(rock)
+
+                    self.dx, self.dy = normalize(self.world.mars_base.x - self.x, self.world.mars_base.y - self.y)
                     return
                 
                 # Pick up morona
@@ -97,6 +110,7 @@ class Explorer(DrawableEntity):
                     if self.last_index != index:
                         self.world.remove_entity(morona, index)
                         self.last_index = index
+                        return
 
 
                 # Head towards rock.
@@ -105,8 +119,8 @@ class Explorer(DrawableEntity):
                 if rock:
                     self.dx, self.dy = normalize(rock.x - self.x, rock.y - self.y)
 
-        # CAPA 5
-        self._move()
+            # CAPA 5
+            self._move()
 
     def _move(self):
         self.x += self.dx
@@ -123,6 +137,10 @@ class Explorer(DrawableEntity):
                             self.world)
         bounds = new_self.get_bounds()
 
+        # Tengo una piedra y la puedo dejar en base
+        if self.has_rock and self._drop_available():
+            return True
+
         if not rect_in_world(bounds, new_self.world):
             return False
 
@@ -135,7 +153,10 @@ class Explorer(DrawableEntity):
             if isinstance(other, Morona):
                 continue
 
-            if rects_are_overlapping(bounds, other.get_bounds()):
+            if not self.has_rock and isinstance(other, Rock):
+                return True
+
+            if rects_are_overlapping(bounds, other.get_bounds(), 2):
                 return False
 
         return True

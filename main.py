@@ -41,8 +41,8 @@ def init_entities(num_obstacles, num_rocks, num_explorers, num_carriers):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--obstacles', default=50, dest='obstacles', type=int)
-    parser.add_argument('--rocks', default=100, dest='rocks', type=int)
-    parser.add_argument('--explorers', default=7, dest='explorers', type=int)
+    parser.add_argument('--rocks', default=40, dest='rocks', type=int)
+    parser.add_argument('--explorers', default=10, dest='explorers', type=int)
     parser.add_argument('--carriers', default=5, dest='carriers', type=int)
 
     args = parser.parse_args()
