@@ -1,54 +1,32 @@
-# mars-explorer
-School assignment - Multi Agent System collecting stuff on Mars
+﻿# Windows
 
-## Run me
+> Change the line 1 from gui.py to **from tkinter import Tk, Canvas**
 
-```bash
-python main.py --help
-usage: main.py [-h] [--obstacles OBSTACLES] [--rocks ROCKS]
-               [--explorers EXPLORERS] [--carriers CARRIERS]
+>git clone https://github.com/guillept/sistemas-inteligente.git
 
-optional arguments:
-  -h, --help            show this help message and exit
-  --obstacles OBSTACLES
-  --rocks ROCKS
-  --explorers EXPLORERS
-  --carriers CARRIERS
+>sudo apt upgrade
 
-```
+>sudo apt update
 
-All params have defaults.
+>sudo apt-get clean
 
-## Details
+>sudo apt-get install python-tk
 
-### Explorers
+>**Install Xming Server
+>[https://sourceforge.net/projects/xming/?source=typ_redirect](https://sourceforge.net/projects/xming/?source=typ_redirect)**
 
-* can carry 1 rock
-* know where the base is
-* can sense nearby rocks
-* can sense if they are "on" a rock or the base
+>**Open Ubuntu terminal or whatever environment you are using**
 
-### Carriers
+>vim .bashrc
 
-* can carry any number of rocks
-* can go to an explorer agent
+>**At the end of the file write the next line** export DISPLAY=:0;
+
+>**Save the document with** :qw
+
+>python main.py --carriers 0
 
 
-## Modes
+# Mac
 
-### No carriers
+>python main.py --carriers 0
 
-Explorers wander about, for every rock found they take it to the base.
-
-    To run in this mode, you need to pass `--carriers 0`.
-
-![demo-without-carriers](https://raw.githubusercontent.com/mihneadb/mars-explorer/master/demo-gifs/mars-explorer-no-carriers.gif)
-
-### With carriers
-
-Explorers wander about. When they find a rock, they stop, send a message to all carriers
-and one or more carriers will come to pick up the rock. Then the explorer carries on with
-the search. When all the rocks are collected, the carriers go to the base to turn in their
-rocks.
-
-![demo-with-carriers](https://raw.githubusercontent.com/mihneadb/mars-explorer/master/demo-gifs/mars-explorer-carriers.gif)
