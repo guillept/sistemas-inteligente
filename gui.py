@@ -2,7 +2,7 @@ from Tkinter import Tk, Canvas
 
 
 class GUI(object):
-    def __init__(self, world):
+    def __init__(self, world, is_collab):
         self.ticks = 0
         self.world = world
         self.width = world.width

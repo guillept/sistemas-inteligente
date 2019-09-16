@@ -93,10 +93,11 @@ class Explorer(DrawableEntity):
                 if rock:
                     self.has_rock = True
 
-                    moronas = Morona.generate_many(2, self.world, self.x, self.y)
-                    for morona in moronas:
-                        self.world.add_entity(morona, self.index)   
-                    self.index += 1
+                    if (self.world.is_collab):
+                        moronas = Morona.generate_many(2, self.world, self.x, self.y)
+                        for morona in moronas:
+                            self.world.add_entity(morona, self.index)   
+                        self.index += 1
                 
                     self.world.remove_entity(rock)
 
@@ -105,12 +106,13 @@ class Explorer(DrawableEntity):
                 
                 # Pick up morona
                 # CAPA 4
-                morona, index = self._morona_available()
-                if morona:
-                    if self.last_index != index:
-                        self.world.remove_entity(morona, index)
-                        self.last_index = index
-                        return
+                if (self.world.is_collab):
+                    morona, index = self._morona_available()
+                    if morona:
+                        if self.last_index != index:
+                            self.world.remove_entity(morona, index)
+                            self.last_index = index
+                            return
 
 
                 # Head towards rock.

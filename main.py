@@ -9,8 +9,8 @@ from entities.rock import Rock
 from entities.world import World
 
 
-def init_entities(num_obstacles, num_rocks, num_explorers, num_carriers):
-    world = World(500, 500, num_rocks)
+def init_entities(num_obstacles, num_rocks, num_explorers, num_carriers, is_collab):
+    world = World(500, 500, num_rocks, is_collab)
 
     mars_base = MarsBase(world.width, world.height)
     world.add_entity(mars_base)
@@ -40,19 +40,21 @@ def init_entities(num_obstacles, num_rocks, num_explorers, num_carriers):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--obstacles', default=50, dest='obstacles', type=int)
+    parser.add_argument('--obstacles', default=20, dest='obstacles', type=int)
     parser.add_argument('--rocks', default=40, dest='rocks', type=int)
     parser.add_argument('--explorers', default=10, dest='explorers', type=int)
-    parser.add_argument('--carriers', default=5, dest='carriers', type=int)
+    parser.add_argument('--carriers', default=0, dest='carriers', type=int)
+    parser.add_argument('--collab', default=0, dest='collab', type=int)
 
     args = parser.parse_args()
 
     world = init_entities(args.obstacles,
                           args.rocks,
                           args.explorers,
-                          args.carriers)
+                          args.carriers,
+                          args.collab)
 
-    gui = GUI(world)
+    gui = GUI(world, args.collab)
     gui.start()
 
 

@@ -10,7 +10,7 @@ from entities.morona import Morona
 class World(DrawableEntity):
     COLOR = '#804C1A'
 
-    def __init__(self, width, height, num_rocks):
+    def __init__(self, width, height, num_rocks, is_collab):
         self.width = width
         self.height = height
 
@@ -25,6 +25,7 @@ class World(DrawableEntity):
         self.num_rocks = num_rocks
         self.num_moronas = 0
         self.rocks_collected = 0
+        self.is_collab = is_collab
 
     def draw(self, canvas):
         canvas.configure(background=self.COLOR)
